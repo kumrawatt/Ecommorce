@@ -15,15 +15,15 @@
    {% if request.user.is_authenticated %}
    {% if item_alredy_in_cart %}
    <a href="{% url 'showcart' %}" class="btn btn-primary shadow px-5 py-2">Go to Cart</a>
-   {% elif %}
-   <form action='add-to-cart' class="d-inline">
+   {% else %}
+   <form action='/add-to-cart' class="d-inline">
     <input type="hidden" name="prod_id" value={{product.id}} id="prod_id">
     <button type="submit" class="btn btn-primary shadow px-5 px-2">Add to cart</button>
    </form>
    {% endif %}
    {% endif %}
    {% if not request.user.is_authenticated %}
-    <form action='add-to-cart' class="d-inline">
+    <form action='/add-to-cart' class="d-inline">
     <input type="hidden" name="prod_id" value={{product.id}} id="prod_id">
     <button type="submit" class="btn btn-primary shadow px-5 px-2">Add to cart</button>
    </form>

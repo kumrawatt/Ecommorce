@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views import View
 from .models import *
 from django.db.models import Q
@@ -43,9 +43,9 @@ class ProductDetailView(View):
     Q(product=product.id)& Q(user = request.user)
    
    ).exists()
-   return render(request,"productdetail.html",{"product":product,"item_alredy_in_cart":item_alredy_in_cart})
+   return render(request,"app/productdetail.html",{"product":product,"item_alredy_in_cart":item_alredy_in_cart})
   else:
-   return render(request,"productdetail.html",{"product":product,"item_alredy_in_cart":item_alredy_in_cart})
+   return render(request,"app/productdetail.html",{"product":product,"item_alredy_in_cart":item_alredy_in_cart})
    
 
  
@@ -69,7 +69,18 @@ def showcart(request):
     
  
    if cart_product :
-    print
+      for p in cart_product:
+        tempamount = p.quantity *p.product.discounted_price
+        amount += tempamount
+        total_amount = amount + shipping_amount
+      return render(
+          request,
+          "app/addtocart.html",
+          {"cart":cart, "total_amount": total_amount, "amount":amount}
+      )  
+
+   else:
+       return render(request, "app/emptycart.html")  
 
 
 def buy_now(request):
