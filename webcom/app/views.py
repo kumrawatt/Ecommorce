@@ -82,6 +82,31 @@ def showcart(request):
    else:
        return render(request, "app/emptycart.html")  
 
+def plus_cart(request):
+    if request.method =="GET":
+        prod_id = request.GET["prod_id"]
+        c = Cart.object.get(Q(product=prod_id) & Q(user=request.user))
+        c.quantity += 1
+        c.save()
+        amount = 0.0
+        shiping_amount = 70.0
+        cart_product =[p for p in Cart.object.all() if p.user == request.user]
+        for p in car_product:
+            tempamount = p.quantity * p.product.discounted_price
+            amount += tempamount
+
+        data ={
+              
+            "quantity":c.quantity,
+            "amount" :amount,
+            "totalamount": amount + shipping_amount,
+    }
+    return JsonResponse(data)
+   
+
+        
+
+
 
 def buy_now(request):
  return render(request, 'app/buynow.html')
